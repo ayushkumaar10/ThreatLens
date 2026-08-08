@@ -1,10 +1,11 @@
 from rich.console import Console
+from rich.text import Text
 
 console = Console()
 
 
 def show_banner():
-    console.print(
+    banner = Text(
         r"""
 ████████╗██╗  ██╗██████╗ ███████╗ █████╗ ████████╗
 ╚══██╔══╝██║  ██║██╔══██╗██╔════╝██╔══██╗╚══██╔══╝
@@ -12,10 +13,15 @@ def show_banner():
    ██║   ██╔══██║██╔══██╗██╔══╝  ██╔══██║   ██║
    ██║   ██║  ██║██║  ██║███████╗██║  ██║   ██║
    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝
-                    L E N S
+
+              L E N S
+
+        NETWORK THREAT ANALYZER
+               V 2.0
+
+        SCAN  •  DETECT  •  ANALYZE
 """,
         style="bold red",
     )
 
-    console.print("[bold cyan]Network Threat Analyzer[/bold cyan]")
-    console.print("[green]Scan • Detect • Analyze[/green]")
+    console.print(banner)
