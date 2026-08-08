@@ -4,9 +4,6 @@ detectors/traversal.py
 Detects Directory Traversal attempts.
 """
 
-from scapy.layers.inet import IP
-from scapy.packet import Raw
-
 from detectors.base_detector import BaseDetector
 
 
@@ -22,8 +19,9 @@ class TraversalDetector(BaseDetector):
     def detect(self, packets):
 
         findings = []
+        reported = set()
 
-        payloads = [
+        signatures = [
             "../",
             "..\\",
             "%2e%2e%2f",
@@ -43,19 +41,29 @@ class TraversalDetector(BaseDetector):
             if request_line is None:
                 continue
 
-            for signature in payloads:
+            for signature in signatures:
 
-                if signature.lower() in request_line:
+                if signature in request_line:
 
                     src, dst = self.get_hosts(packet)
 
-                    findings.append(
-                        self.create_finding(
-                            src,
-                            dst,
-                            f"Possible Directory Traversal detected ({signature})"
-                        )
+                    key = (
+                        src,
+                        dst,
+                        request_line
                     )
+
+                    if key not in reported:
+
+                        reported.add(key)
+
+                        findings.append(
+                            self.create_finding(
+                                src,
+                                dst,
+                                f"Possible Directory Traversal detected ({signature})"
+                            )
+                        )
 
                     break
 

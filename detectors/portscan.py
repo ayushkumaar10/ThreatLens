@@ -17,7 +17,7 @@ class PortScanDetector(BaseDetector):
 
         super().__init__(
             name="Port Scan",
-            severity="HIGH"
+            severity="High"
         )
 
     def detect(self, packets):
